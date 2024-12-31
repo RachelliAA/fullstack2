@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game Menu</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <script src="../js/menu.js"></script>
+
+</head>
+<body>
+    <div class="sidebar" id="sidebar">
+        <!-- Sidebar links with small icons -->
+        <a href="profile.html">
+          <img src="../img/person_16741302.png" alt="Profile Icon">
+          Profile
+        </a>
+        <a href="menu.html">
+          <img src="../img/puzzle_8317735.png" alt="Home Icon">
+          Home
+        </a>
+        <a href="../index.html" onclick="logout()">
+          <img src="../img/right_4051956.png" alt="Logout Icon">
+          Logout
+        </a>
+      </div>
+      
+
+  <!-- Hamburger menu -->
+  <div class="hamburger" onclick="toggleSidebar()">
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <h1>Game Menu</h1>
+  </header>
+
+  <!-- Main content -->
+  <main class="menu-container">
+    <!-- Row of active games -->
+    <div class="game-row">
+      <div class="game-card">
+        <img src="../img/game1.png" alt="Catch the Stars">
+        <h2>Catch the Stars</h2>
+        <p>A fun game where you collect stars!</p>
+        <button onclick="window.location.href='game1.html'">Play Now</button>
+      </div>
+
+      <div class="game-card">
+        <img src="../img/game2.png" alt="Color Puzzle">
+        <h2>Color Puzzle</h2>
+        <p>Test your memory with color sequences!</p>
+        <button onclick="window.location.href='game2.html'">Play Now</button>
+      </div>
+    </div>
+
+    <!-- Row of games under development -->
+    <div class="game-row">
+      <div class="game-card">
+        <img src="../img/comingsoon1.jpg" alt="Coming Soon">
+        <h2>Coming Soon...</h2>
+        <p>New games are under development!</p>
+        <button disabled>Stay Tuned</button>
+      </div>
+
+      <div class="game-card">
+        <img src="../img/comingsoon2.png" alt="Coming Soon">
+        <h2>Coming Soon...</h2>
+        <p>New games are under development!</p>
+        <button disabled>Stay Tuned</button>
+      </div>
+    </div>
+  </main>
+
+</body>
+</html>

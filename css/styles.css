@@ -1,0 +1,146 @@
+/* General body styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+    color: #333;
+    text-align: center;
+    overflow-x: hidden;
+  }
+  
+  /* Sidebar styling */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: -200px; /* Sidebar hidden by default */
+    width: 250px;
+    height: 100%;
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+    transition: left 0.3s ease; /* Smooth transition */
+    z-index: 1000;
+  }
+  
+  /* Sidebar open */
+  .sidebar.open {
+    left: 0; /* Sidebar visible when open */
+  }
+  
+ /* Sidebar links */
+.sidebar a {
+    display: flex;
+    align-items: center; /* Align text and images */
+    color: white;
+    text-decoration: none;
+    margin: 15px 15px;
+    margin-top: 50px;
+    font-size: 1.2em;
+  }
+  
+  /* Small images in sidebar */
+  .sidebar a img {
+    width: 20px; /* Adjust size of the icons */
+    height: 20px;
+    margin-right: 20px; /* Space between the icon and text */
+    border-radius: 50%; /* Optional: Make the icon circular */
+  }
+  
+  /* Hover effect */
+  .sidebar a:hover {
+    color: #6200ea;
+  }
+  
+  /* Hamburger menu styling */
+  .hamburger {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    cursor: pointer;
+    z-index: 2000;
+  }
+  
+  .hamburger .bar {
+    width: 30px; /* Length of the bar */
+    height: 4px; /* Thickness of the bar */
+    background-color: white; /* Bar color */
+    margin: 5px 0; /* Spacing between bars */
+    transition: 0.3s;
+  }
+  
+  /* Hamburger menu color on hover */
+  .hamburger:hover .bar {
+    background-color: #6200ea;
+  }
+
+  /* Menu container styling */
+.menu-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    transition: margin-left 0.3s ease;
+  }
+  
+  /* When sidebar is open, content stays to the right */
+  .sidebar.open ~ .menu-container {
+    margin-left: 250px;
+  }
+  
+  /* Game row styling */
+.game-row {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  /* Game card styling */
+  .game-card {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .game-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  
+  .game-card h2 {
+    font-size: 1.5em;
+    margin: 10px 0;
+  }
+  
+  .game-card p {
+    font-size: 1em;
+    margin: 10px 0;
+  }
+  
+  .game-card button {
+    background-color: #6200ea;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .game-card button:hover {
+    background-color: #4500b5;
+  }
+  
+  .game-card button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
