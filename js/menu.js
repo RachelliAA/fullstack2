@@ -7,7 +7,8 @@ function toggleSidebar() {
   // Logout function
   function logout() {
     alert("You have been logged out!");
-    window.location.href = '../index.html';
+    localStorage.removeItem('current user');
+    window.location.href = '../pages/login.html';
   }
   
 
