@@ -10,3 +10,5 @@ function toggleSidebar() {
     window.location.href = '../index.html';
   }
   
+
+  //<a href="../index.html" onclick="logout()"></a>
