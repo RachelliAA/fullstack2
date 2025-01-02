@@ -88,3 +88,50 @@ function handleFailedAttempt(email) {
     }
   }
 }
+
+
+
+//// Function to set a cookie
+// function setCookie(name, value, hours) {
+//   const date = new Date();
+//   date.setTime(date.getTime() + hours * 60 * 60 * 1000);
+//   document.cookie = `${name}=${value}; expires=${date.toUTCString()}; path=/`;
+// }
+
+// // Function to get a cookie by name
+// function getCookie(name) {
+//   const cookies = document.cookie.split('; ');
+//   for (let cookie of cookies) {
+//     const [key, value] = cookie.split('=');
+//     if (key === name) {
+//       return value;
+//     }
+//   }
+//   return null;
+// }
+
+// // Check for saved email cookie on page load
+// document.addEventListener('DOMContentLoaded', () => {
+//   const savedEmail = getCookie('lastEmail');
+//   if (savedEmail) {
+//     document.getElementById('login-email').value = savedEmail; // Autofill the email input
+//   }
+// });
+
+// // Save email to cookies after successful login
+// document.getElementById('login').addEventListener('submit', (e) => {
+//   e.preventDefault();
+//   const email = document.getElementById('login-email').value;
+//   const password = document.getElementById('login-password').value;
+
+//   if (users[email] && users[email].password === password) {
+//     alert('Login successful');
+//     setCookie('lastEmail', email, 24); // Save the email in cookies for 24 hours
+//     document.cookie = `user=${email}; max-age=600`; // Set session cookie for user
+//     window.location.href = '../pages/menu.html';
+//     failedAttempts[email] = null;
+//   } else {
+//     alert('Invalid email or password');
+//     handleFailedAttempt(email);
+//   }
+// });
