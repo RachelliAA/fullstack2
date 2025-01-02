@@ -42,10 +42,9 @@ body {
   
   /* Small images in sidebar */
   .sidebar a img {
-    width: 20px; /* Adjust size of the icons */
-    height: 20px;
+    width: 30px; /* Adjust size of the icons */
+    height: 30px;
     margin-right: 20px; /* Space between the icon and text */
-    border-radius: 50%; /* Optional: Make the icon circular */
   }
   
   /* Hover effect */

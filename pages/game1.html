@@ -8,37 +8,55 @@
   <script src="../js/game1.js"></script>
 </head>
 <body>
-  <!-- Header section with the game title and exit button -->
+  <!-- Main header -->
   <header>
-    <div id="header-container">
-      <h1>Catch the Stars</h1>
-      <button id="exit-btn">Exit</button> <!-- Exit button -->
-    </div>
-    <div id="tabs">
-      <button class="tab" id="tab-level-1" onclick="showLevel(1)">Level 1</button>
-      <button class="tab" id="tab-level-2" onclick="showLevel(2)" disabled>Level 2</button>
-      <button class="tab" id="tab-level-3" onclick="showLevel(3)" disabled>Level 3</button>
-    </div>
+    <h1>Catch the Stars</h1>
   </header>
 
-  <!-- Main content -->
-  <main>
-    <!-- Game area: stars will appear here -->
-    <div id="game-area"></div>
-
-    <!-- Scoreboard: displays current score, time left, and lives -->
-    <div id="score-board">
-      <p>Score: <span id="score">0</span></p>
-      <p id="high-score">High Score (Level 1): 0</p>
-      <p>Time Left: <span id="time">30</span>s</p>
-      <p>Lives: <span id="lives">3</span></p>
-    </div>
-
-    <!-- Buttons for controlling the game -->
-    <div id="controls">
+  <!-- Control bar -->
+  <div id="control-bar">
+    <div id="controls-left">
       <button id="start-stop-btn" onclick="toggleStartStop()">Start</button>
       <button id="pause-btn" onclick="togglePause()" disabled>Pause Game</button>
     </div>
-  </main>
+    <div id="controls-right">
+      <button id="instructions-btn">How to Play</button>
+      <button id="exit-btn">Exit</button>
+    </div>
+  </div>
+
+  <!-- Scoreboard -->
+  <div id="scoreboard">
+    <p>Score: <span id="score">0</span></p>
+    <p id="personal-high-scores">High Score: 0</p>
+    <p>Time Left: <span id="time">30</span>s</p>
+    <p>Lives: <span id="lives">3</span></p>
+    <p id="global-high-scores" >Global High Score: 0</p>
+
+  </div>
+
+  <!-- Level tabs -->
+  <div id="tabs">
+    <button class="tab" id="tab-level-1" onclick="showLevel(1)">Level 1</button>
+    <button class="tab" id="tab-level-2" onclick="showLevel(2)" disabled>Level 2</button>
+    <button class="tab" id="tab-level-3" onclick="showLevel(3)" disabled>Level 3</button>
+  </div>
+
+  <!-- Game area -->
+  <div id="game-area"></div>
+
+  <!-- Popup -->
+  <div id="popup" class="hidden">
+    <div class="popup-content">
+      <p id="popup-message">
+        Welcome to "Catch the Stars"!<br>
+        - Catch the **yellow stars** to score points.<br>
+        - Avoid the **red stars**; they cost you lives.<br>
+        - Collect 10 points to unlock the next level!<br>
+        Good luck!
+      </p>
+      <button id="close-popup">Close</button>
+    </div>
+  </div>
 </body>
 </html>
