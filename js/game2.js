@@ -132,6 +132,7 @@ function handlePlayerInput(color) {
 
   if (playerSequence[currentIndex] !== gameSequence[currentIndex]) {
     message.textContent = "Game Over! Try Again.";
+    updateHighScore();
     finishedLevel = level;
     resetGame();
     levelText.textContent = finishedLevel;
@@ -144,6 +145,37 @@ function handlePlayerInput(color) {
     setTimeout(startNewRound, 1000);
   }
 }
+
+
+
+// Update the high score for the current user
+function updateHighScore() {
+  const currentUser = JSON.parse(localStorage.getItem('current user'));//gets the current user
+  const users = JSON.parse(localStorage.getItem("users")) || [];//gets all the users
+
+  let highestScore = currentUser["colorPuzzle"] || 0; // Get current highest score for the game
+
+  if (level > highestScore) {
+    currentUser["colorPuzzle"] = level; // Update the color puzzle highest score
+    localStorage.setItem("current user", JSON.stringify(currentUser));//updates the current user
+
+    // Update users list
+    const userIndex = users.findIndex(user => user.email === currentUser.email);
+    if (userIndex > -1) {
+      users[userIndex]["colorPuzzle"] = level;
+    } else {
+      users.push({
+        email: currentUser.email,
+        password: currentUser.password,
+        name: currentUser.name,
+        colorPuzzle: level
+      });
+    }
+
+    localStorage.setItem("users", JSON.stringify(users));//updates the users 
+  }
+}
+
 
 // Reset the game
 function resetGame() {
