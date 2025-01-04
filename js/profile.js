@@ -1,80 +1,77 @@
-// Elements
-const profileButton = document.getElementById("profile-button");
-const profileModal = document.getElementById("profile-modal");
-const closeButton = document.querySelector(".close");
-const saveButton = document.getElementById("save-profile");
-const nameInput = document.getElementById("name");
-const emailInput = document.getElementById("email");
-const passwordInput = document.getElementById("password");
+// Retrieve the current user from localStorage
+const currentUser = JSON.parse(localStorage.getItem('current user'));
+const users = JSON.parse(localStorage.getItem('users')) || {}; // Get users list
 
-// Open profile modal
-profileButton.addEventListener("click", () => {
-  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+// Display current user's email and other info on the profile page
+document.getElementById('user-email').innerText = currentUser.email;
+document.getElementById('user-name').innerText = currentUser.name;
 
-  nameInput.value = currentUser.name;
-  emailInput.value = currentUser.email;
-  passwordInput.value = currentUser.password;
+// Dynamically create stars for the password based on its length
+const passwordLength = currentUser.password.length;
+document.getElementById('user-password').innerText = '•'.repeat(passwordLength);
 
-  profileModal.style.display = "block";
-});
+// Toggle visibility of the password
+const passwordField = document.getElementById('user-password');
+const eyeIcon = document.getElementById('eye-icon');
 
-// Close profile modal
-closeButton.addEventListener("click", () => {
-  profileModal.style.display = "none";
-});
-
-// Save profile changes
-saveButton.addEventListener("click", () => {
-  const updatedUser = {
-    name: nameInput.value,
-    email: emailInput.value,
-    password: passwordInput.value,
-  };
-
-  // Update currentUser in localStorage
-  localStorage.setItem("currentUser", JSON.stringify(updatedUser));
-
-  // Update the users list
-  let users = JSON.parse(localStorage.getItem("users")) || [];
-  const userIndex = users.findIndex(user => user.email === updatedUser.email);
-
-  if (userIndex > -1) {
-    users[userIndex] = updatedUser; // Update existing user
+eyeIcon.addEventListener('click', () => {
+  // Check if the password is currently hidden or visible
+  if (passwordField.innerText === '•'.repeat(passwordLength)) {
+    // Show the password
+    passwordField.innerText = currentUser.password;
+    eyeIcon.src = '../img/eye-close-1-32.png'; // Change to open eye icon
   } else {
-    users.push(updatedUser); // Add new user if not found
-  }
-
-  localStorage.setItem("users", JSON.stringify(users));
-
-  alert("Profile updated successfully!");
-  profileModal.style.display = "none";
-});
-
-// Close modal when clicking outside of it
-window.addEventListener("click", (event) => {
-  if (event.target === profileModal) {
-    profileModal.style.display = "none";
+    // Hide the password
+    passwordField.innerText = '•'.repeat(passwordLength);
+    eyeIcon.src = '../img/eye-close-1-32.png'; // Change to closed eye icon
   }
 });
 
+// Update username
+document.getElementById('update-username').addEventListener('click', () => {
+  const newUsername = document.getElementById('new-username').value;
+  if (newUsername && newUsername !== currentUser.name) {
+    // Update the current user's name in localStorage
+    currentUser.name = newUsername;
+    localStorage.setItem('current user', JSON.stringify(currentUser));
 
-saveButton.addEventListener("click", () => {
-    const updatedUser = {
-      name: nameInput.value,
-      email: emailInput.value,
-      password: passwordInput.value,
-    };
-  
-    let users = JSON.parse(localStorage.getItem("users")) || [];
-    const emailExists = users.some(
-      user => user.email === updatedUser.email && user.email !== JSON.parse(localStorage.getItem("currentUser")).email
-    );
-  
-    if (emailExists) {
-      alert("Email is already in use!");
-      return;
+    // Update the users list
+    const userIndex = users.findIndex(user => user.email === currentUser.email);
+    if (userIndex > -1) {
+      users[userIndex].name = newUsername;
+      localStorage.setItem('users', JSON.stringify(users));
     }
-  
-    // Update logic as before
-  });
-  
+
+    alert('Username updated successfully');
+    document.getElementById('user-name').innerText = newUsername; // Update the displayed username
+  } else {
+    alert('Please enter a new username');
+  }
+});
+
+// Update password
+document.getElementById('update-password').addEventListener('click', () => {
+  const newPassword = document.getElementById('new-password').value;
+  if (newPassword) {
+    // Update the current user's password in localStorage
+    currentUser.password = newPassword;
+    localStorage.setItem('current user', JSON.stringify(currentUser));
+
+    // Update the users list
+    const userIndex = users.findIndex(user => user.email === currentUser.email);
+    if (userIndex > -1) {
+      users[userIndex].password = newPassword;
+      localStorage.setItem('users', JSON.stringify(users));
+    }
+
+    alert('Password updated successfully');
+    document.getElementById('user-password').innerText = '•'.repeat(newPassword.length); // Update stars
+  } else {
+    alert('Please enter a new password');
+  }
+});
+
+// Back to menu button
+document.getElementById('back-button').addEventListener('click', () => {
+  window.location.href = 'menu.html'; // Redirect to the menu page
+});

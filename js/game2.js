@@ -149,33 +149,74 @@ function handlePlayerInput(color) {
 
 
 // Update the high score for the current user
+// function updateHighScore() {
+//   const currentUser = JSON.parse(localStorage.getItem('current user'));//gets the current user
+//   const users = JSON.parse(localStorage.getItem("users")) || [];//gets all the users
+
+//   let highestScore = currentUser["colorPuzzle"] || 0; // Get current highest score for the game
+
+//   if (level > highestScore) {
+//     currentUser["colorPuzzle"] = level; // Update the color puzzle highest score
+//     localStorage.setItem("current user", JSON.stringify(currentUser));//updates the current user
+
+//     // Update users list
+//     const userIndex = users.findIndex(user => user.email === currentUser.email);
+//     if (userIndex > -1) {
+//       users[userIndex]["colorPuzzle"] = level;
+//     } else {
+//       users.push({
+//         email: currentUser.email,
+//         password: currentUser.password,
+//         name: currentUser.name,
+//         colorPuzzle: level
+//       });
+//     }
+
+//     localStorage.setItem("users", JSON.stringify(users));//updates the users 
+//   }
+// }
+
+
 function updateHighScore() {
-  const currentUser = JSON.parse(localStorage.getItem('current user'));//gets the current user
-  const users = JSON.parse(localStorage.getItem("users")) || [];//gets all the users
-
-  let highestScore = currentUser["colorPuzzle"] || 0; // Get current highest score for the game
-
-  if (level > highestScore) {
-    currentUser["colorPuzzle"] = level; // Update the color puzzle highest score
-    localStorage.setItem("current user", JSON.stringify(currentUser));//updates the current user
-
-    // Update users list
-    const userIndex = users.findIndex(user => user.email === currentUser.email);
-    if (userIndex > -1) {
-      users[userIndex]["colorPuzzle"] = level;
-    } else {
-      users.push({
-        email: currentUser.email,
-        password: currentUser.password,
-        name: currentUser.name,
-        colorPuzzle: level
-      });
+    const currentUser = JSON.parse(localStorage.getItem('current user')); // Get the current user
+    const users = JSON.parse(localStorage.getItem("users")) || []; // Get all the users
+  
+    // Ensure the "games" object exists for the current user
+    if (!currentUser["games"]) {
+      currentUser["games"] = {}; // Initialize an empty "games" object if it doesn't exist
     }
-
-    localStorage.setItem("users", JSON.stringify(users));//updates the users 
+  
+    let highestScore = currentUser["games"]["colorPuzzle"] || 0; // Get current highest score for colorPuzzle
+  
+    // Check if the level is higher than the current highest score
+    if (level > highestScore) {
+      currentUser["games"]["colorPuzzle"] = level; // Update the color puzzle highest score
+  
+      // Update the current user in localStorage
+      localStorage.setItem("current user", JSON.stringify(currentUser));
+  
+      // Update the users list
+      const userIndex = users.findIndex(user => user.email === currentUser.email);
+      if (userIndex > -1) {
+        users[userIndex]=currentUser// Update the game score for the existing user
+      } else {
+        // Add a new user with the updated game score
+        users.push({
+          email: currentUser.email,
+          password: currentUser.password,
+          name: currentUser.name,
+          games: {
+            colorPuzzle: level, // Add color puzzle game score
+          }
+        });
+      }
+  
+      // Update the users list in localStorage
+      localStorage.setItem("users", JSON.stringify(users));
+    }
   }
-}
-
+  
+  
 
 // Reset the game
 function resetGame() {
