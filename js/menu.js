@@ -12,4 +12,3 @@ function toggleSidebar() {
   }
   
 
-  //<a href="../index.html" onclick="logout()"></a>
