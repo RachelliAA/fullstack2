@@ -7,6 +7,19 @@
   <link rel="stylesheet" href="../css/game2.css">
 </head>
 <body>
+  <!-- <div class="game-container">
+    <h1>Color Puzzle</h1>
+    <p>Follow the sequence of colors!</p>
+    <div id="color-buttons">
+      <button class="color-btn" id="red"></button>
+      <button class="color-btn" id="blue"></button>
+      <button class="color-btn" id="green"></button>
+      <button class="color-btn" id="yellow"></button>
+    </div>
+    <button id="start-button">Start Game</button>
+    <p id="message"></p>
+    <p>Level: <span id="level">0</span></p>
+  </div> -->
   <div class="game-container">
     <h1>Color Puzzle</h1>
     <p>Follow the sequence of colors!</p>
@@ -19,7 +32,17 @@
     <button id="start-button">Start Game</button>
     <p id="message"></p>
     <p>Level: <span id="level">0</span></p>
+  
+    <!-- Modal for Game Over -->
+    <div id="game-over-modal" class="modal">
+      <div class="modal-content">
+        <h2>Game Over!</h2>
+        <p>Your level: <span id="final-level"></span></p>
+        <button id="close-modal">Close</button>
+      </div>
+    </div>
   </div>
+  
   <script src="../js/game2.js"></script>
 </body>
 </html>
