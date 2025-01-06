@@ -6,13 +6,28 @@ body {
   background-color: #070707;
   color: white;
   text-align: center;
+  top: 130px;
+  position: relative;
 }
 
 /* Header */
-header {
+/* header {
   background-color: #2352a1;
   color: white;
   padding: 20px 0;
+  
+} */
+/* General header (below the common header) */
+#game1 {
+  background-color: #2352a1;
+  color: white;
+  padding: 50px 50px,50px,50px;
+  position: fixed;
+  top: 70px; /* Adjust to match the height of the common header */
+  width: 100%;
+  z-index: 10;
+  margin: 50px,50px,50px,50px;
+  
 }
 
 h1 {
