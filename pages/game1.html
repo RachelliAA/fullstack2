@@ -5,12 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Catch the Stars</title>
   <link rel="stylesheet" href="../css/game1.css">
-  <script src="../js/game1.js"></script>
 </head>
 <body>
   <!-- Main header -->
   <header>
-    <button class="btn-instructions" id="instructions-btn">How to Play</button>
+    <button class="btn-instructions" id="instructions-btn" onclick="showPopup()">How to Play</button>
     <h1>Catch the Stars</h1>
     <button class="btn-exit" id="exit-btn">Exit</button>
   </header>
@@ -38,11 +37,10 @@
     <button class="btn-control" id="pause-btn" onclick="togglePause()" disabled>Pause Game</button>
   </div>
 
-  <!-- Popup -->
+  <!-- Popup Modal -->
   <div id="popup" class="hidden">
     <div class="popup-content">
-      <p id="popup-message">
-        Welcome to "Catch the Stars"!<br>
+      <p id="popup-message">Welcome to "Catch the Stars"!<br>
         - Catch the **yellow stars** to score points.<br>
         - Avoid the **red stars**; they cost you lives.<br>
         - Collect 10 points to unlock the next level!<br>
@@ -51,5 +49,6 @@
       <button id="close-popup">Close</button>
     </div>
   </div>
+  <script src="../js/game1.js"></script>
 </body>
 </html>

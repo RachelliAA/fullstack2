@@ -179,7 +179,7 @@ h1 {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.8); /* Black background with transparency */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -190,8 +190,8 @@ h1 {
 }
 
 .popup-content {
-  background-color: #1e1e1e;
-  color: #ffffff;
+  background-color: #000; /* Black background */
+  color: #fff; /* White text */
   padding: 30px;
   border-radius: 10px;
   text-align: center;
@@ -202,7 +202,7 @@ h1 {
 }
 
 #close-popup {
-  background-color: #e74c3c;
+  background-color: #e74c3c; /* Red button */
   color: white;
   border: none;
   padding: 10px 20px;
@@ -220,6 +220,7 @@ h1 {
   visibility: visible;
   opacity: 1;
 }
+
 
 /* Responsive styles */
 @media (max-width: 768px) {
