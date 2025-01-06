@@ -11,30 +11,18 @@
 </head>
 <body>
   <!-- Main header -->
+  <header>
+    <button class="btn-instructions" id="instructions-btn" onclick="showPopup()">How to Play</button>
   <header id="game1">
     <h1>Catch the Stars</h1>
+    <button class="btn-exit" id="exit-btn">Exit</button>
   </header>
-
-  <!-- Control bar -->
-  <div id="control-bar">
-    <div id="controls-left">
-      <button id="start-stop-btn" onclick="toggleStartStop()">Start</button>
-      <button id="pause-btn" onclick="togglePause()" disabled>Pause Game</button>
-    </div>
-    <div id="controls-right">
-      <button id="instructions-btn">How to Play</button>
-      <button id="exit-btn">Exit</button>
-    </div>
-  </div>
 
   <!-- Scoreboard -->
   <div id="scoreboard">
     <p>Score: <span id="score">0</span></p>
-    <p id="personal-high-scores">High Score: 0</p>
     <p>Time Left: <span id="time">30</span>s</p>
     <p>Lives: <span id="lives">3</span></p>
-    <p id="global-high-scores" >Global High Score: 0</p>
-
   </div>
 
   <!-- Level tabs -->
@@ -47,11 +35,16 @@
   <!-- Game area -->
   <div id="game-area"></div>
 
-  <!-- Popup -->
+  <!-- Control buttons -->
+  <div id="controls">
+    <button class="btn-control" id="start-stop-btn" onclick="toggleStartStop()">Start</button>
+    <button class="btn-control" id="pause-btn" onclick="togglePause()" disabled>Pause Game</button>
+  </div>
+
+  <!-- Popup Modal -->
   <div id="popup" class="hidden">
     <div class="popup-content">
-      <p id="popup-message">
-        Welcome to "Catch the Stars"!<br>
+      <p id="popup-message">Welcome to "Catch the Stars"!<br>
         - Catch the **yellow stars** to score points.<br>
         - Avoid the **red stars**; they cost you lives.<br>
         - Collect 10 points to unlock the next level!<br>
@@ -60,5 +53,6 @@
       <button id="close-popup">Close</button>
     </div>
   </div>
+  <script src="../js/game1.js"></script>
 </body>
 </html>

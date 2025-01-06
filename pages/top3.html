@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Top Players</title>
+  <link rel="stylesheet" href="../css/top3.css">
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <a href="profile.html"><img src="../img/profile.png" alt="Profile Icon">Profile</a>
+    <a href="menu.html"><img src="../img/games.png" alt="Home Icon">Home</a>
+    <a href="top3.html"><img src="../img/games.png" alt="Top Icon">Top Players</a>
+    <a href="#" onclick="logout()"><img src="../img/logout.png" alt="Logout Icon">Logout</a>
+  </div>
+
+  <!-- Hamburger menu -->
+  <div class="hamburger" onclick="toggleSidebar()">
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+  </div>
+
+  <!-- Main container -->
+  <div class="container">
+    <!-- Catch the Stars Section -->
+    <h1>Catch the Stars - Top Players</h1>
+    <div class="podium">
+      <div class="place second">
+        <p class="position">2</p>
+        <p class="name" id="catchStars-second-name">?</p>
+        <p class="score" id="catchStars-second-score">?</p>
+      </div>
+      <div class="place first">
+        <p class="position">1</p>
+        <p class="name" id="catchStars-first-name">?</p>
+        <p class="score" id="catchStars-first-score">?</p>
+      </div>
+      <div class="place third">
+        <p class="position">3</p>
+        <p class="name" id="catchStars-third-name">?</p>
+        <p class="score" id="catchStars-third-score">?</p>
+      </div>
+    </div>
+  
+    <!-- Player list section -->
+    <div id="catchStars-player-list" class="player-list"></div>
+  </div>
+  
+
+    <!-- Color Puzzle Section >
+    <div class="game-section">
+      <h1>Color Puzzle - Top Players</h1>
+      <div class="podium" id="colorPuzzle-podium"></div>
+      <div class="player-list" id="colorPuzzle-list"></div>
+    </div>-->
+
+  <script src="../js/top3.js"></script>
+  <script src="../js/menu.js"></script>
+</body>
+</html>

@@ -1,56 +1,45 @@
 // Global Variables
-let score = 0;
-let lives = 3;
-let timeLeft = 30;
-let level = 1;
-let gameInterval;
-let isPaused = false;
+let score = 0;        // Player's score
+let lives = 3;        // Remaining lives
+let timeLeft = 30;    // Time left in seconds
+let level = 1;        // Current game level
+let gameInterval;     // Timer for the game
+let yellowStarInterval, redStarInterval;
+let isPaused = false; // Pause state
 
 // Button references
-let startStopButton;
-let pauseButton;
+let startStopButton;  // Start/Stop button
+let pauseButton;      // Pause button
 
-// Initialize the game after DOM is loaded
+// Initialize the game when the page loads
 document.addEventListener("DOMContentLoaded", () => {
   initializeGame();
+  showPopup()
 });
 
-// ** Initialization **
+// Set up buttons and update UI
 function initializeGame() {
   startStopButton = document.getElementById("start-stop-btn");
   pauseButton = document.getElementById("pause-btn");
   pauseButton.disabled = true;
-
   updateTabs();
-  displayHighScores(getCurrentUsername());
-
   document.getElementById("exit-btn").addEventListener("click", handleExit);
 }
 
-// ** Helper Functions **
+// Get current username from local storage
 function getCurrentUsername() {
   return localStorage.getItem("current user") || "Guest";
 }
 
+// Enable or disable level tabs based on high scores
 function updateTabs() {
   const highScoreLevel1 = getHighScore(1);
   const highScoreLevel2 = getHighScore(2);
-
   document.getElementById("tab-level-2").disabled = highScoreLevel1 < 10;
   document.getElementById("tab-level-3").disabled = highScoreLevel2 < 10;
 }
 
-function displayHighScores(username) {
-  const userData = getUserData(username);
-  const personalScores = Object.keys(userData.highScores)
-    .map(level => `${userData.highScores[level]}`)
-    .join(", ");
-  document.getElementById("personal-high-scores").textContent = `Your High Scores: ${personalScores}`;
-
- // const globalScores = getGlobalHighScores();
- // document.getElementById("global-high-scores").textContent = `Global High Scores: ${globalScores.join(", ")}`;
-}
-
+// Reset game variables and update UI
 function resetGameState() {
   score = 0;
   lives = 3;
@@ -58,113 +47,155 @@ function resetGameState() {
   updateUI();
 }
 
+// Update score, lives, and time in the UI
 function updateUI() {
   document.getElementById("score").textContent = score;
   document.getElementById("lives").textContent = lives;
   document.getElementById("time").textContent = timeLeft;
 }
 
-// ** User and Score Management **
+// Get user data from local storage
 function getUserData(username) {
   return JSON.parse(localStorage.getItem(username)) || { highScores: {} };
 }
 
-function saveUserData(username, level, score) {
-  const userData = getUserData(username);
-  if (!userData.highScores[level] || score > userData.highScores[level]) {
-    userData.highScores[level] = score;
+// Update high score for a specific level
+function updateHighScore(level, score) {
+  const currentUser = JSON.parse(localStorage.getItem('current user')) || {};
+  const users = JSON.parse(localStorage.getItem("users")) || [];
+
+  if (!currentUser.games) {
+    currentUser.games = {};
   }
-  localStorage.setItem(username, JSON.stringify(userData));
-  updateGlobalHighScores(score);
+  if (!Array.isArray(currentUser.games.catchTheStars)) {
+    currentUser.games.catchTheStars = [0, 0, 0];
+  }
+
+  // Update high score if the new score is higher
+  if (score > currentUser.games.catchTheStars[level - 1]) {
+    currentUser.games.catchTheStars[level - 1] = score;
+    localStorage.setItem("current user", JSON.stringify(currentUser));
+
+    const userIndex = users.findIndex(user => user.email === currentUser.email);
+    if (userIndex > -1) {
+      users[userIndex] = currentUser;
+    } else {
+      users.push(currentUser);
+    }
+    localStorage.setItem("users", JSON.stringify(users));
+  }
 }
 
+// Get high score for a specific level
 function getHighScore(level) {
-  return parseInt(localStorage.getItem(`highScore_level${level}`)) || 0;
+  const currentUser = JSON.parse(localStorage.getItem('current user')) || {};
+  const personalScores = currentUser.games?.catchTheStars || [0, 0, 0];
+  return personalScores[level - 1];
 }
 
-function updateGlobalHighScores(score) {
-  const globalScores = getGlobalHighScores();
-  globalScores.push(score);
-  globalScores.sort((a, b) => b - a);
-  if (globalScores.length > 3) {
-    globalScores.pop();
+function updateTopScores() {
+  // Retrieve all scores from local storage
+  const allScores = JSON.parse(localStorage.getItem("catchTheStarsAll")) || [];
+
+  // Get current player details
+  const currentUser = JSON.parse(localStorage.getItem("current user")) || {};
+  const currentPlayer = { email: currentUser.email, name: currentUser.name, score: score };
+
+  // Check if the player already exists in the all scores array
+  const existingPlayerIndex = allScores.findIndex(player => player.email === currentPlayer.email);
+
+  if (existingPlayerIndex !== -1) {
+    // If the player exists, update their score only if the new score is higher
+    if (currentPlayer.score > allScores[existingPlayerIndex].score) {
+      allScores[existingPlayerIndex].score = currentPlayer.score;
+    }
+  } else {
+    // If the player does not exist, add them to the array
+    allScores.push(currentPlayer);
   }
-  localStorage.setItem("globalHighScores", JSON.stringify(globalScores));
+
+  // Save the updated all scores array in local storage
+  localStorage.setItem("catchTheStarsAll", JSON.stringify(allScores));
+
+  // Sort by score in descending order and keep only the top 3
+  const topScores = [...allScores].sort((a, b) => b.score - a.score).slice(0, 3);
+
+  // Save the updated Top 3 scores in local storage
+  localStorage.setItem("catchTheStarsTop", JSON.stringify(topScores));
 }
 
-function getGlobalHighScores() {
-  return JSON.parse(localStorage.getItem("globalHighScores")) || [];
-}
 
-// ** Game Logic **
+
+// Start the game by resetting state, enabling buttons, and starting intervals
 function startGame() {
+  clearAllIntervals();
   resetGameState();
 
   startStopButton.textContent = "Stop";
   startStopButton.disabled = true;
+  startStopButton.style.backgroundColor = "#b0b0b0";
   pauseButton.disabled = false;
+  pauseButton.textContent = "Pause";
+  pauseButton.style.backgroundColor = "#be9c13";
 
-  gameInterval = setInterval(() => {
-    if (timeLeft > 0 && lives > 0) {
-      timeLeft--;
-      updateUI();
-    } else {
-      endGame();
-    }
-  }, 1000);
-
-  spawnStars();
+  gameInterval = setInterval(updateTime, 1000); // Decrease time every second
+  setGameIntervals();
 }
 
+// Decrease time and check if game should end
+function updateTime() {
+  if (timeLeft > 0 && lives > 0) {
+    timeLeft--;
+    updateUI();
+  } else {
+    endGame();
+  }
+}
+
+// Function to show popup with dynamic message and button text
+function showPopup(message) {
+  const popup = document.getElementById("popup");
+  const popupMessage = document.getElementById("popup-message");
+  const closeButton = document.getElementById("close-popup");
+
+  if(message){
+  popupMessage.innerHTML = message;
+}
+  popup.classList.add("visible");
+
+  // Close the popup when the button is clicked
+  closeButton.addEventListener("click", () => {
+    popup.classList.remove("visible");
+  });
+}
+
+
+// End the game, display score, and reset everything
 function endGame() {
-  clearInterval(gameInterval);
+  clearAllIntervals();
   document.getElementById("game-area").innerHTML = "";
-  alert(`Game over! Your score is ${score}.`);
 
-  saveUserData(getCurrentUsername(), level, score);
-  displayHighScores(getCurrentUsername());
+  // Show game over popup with score
+  showPopup(`Game over! Your score is ${score}.`, "Close");
 
+  updateHighScore(level, score);
+  updateTopScores();
   resetGameState();
   resetButtons();
 }
 
+
+
+// Reset button states after game ends
 function resetButtons() {
   startStopButton.textContent = "Start";
   startStopButton.disabled = false;
   startStopButton.style.backgroundColor = "";
   pauseButton.disabled = true;
-  pauseButton.textContent = "Pause Game";
+  pauseButton.textContent = "Pause";
 }
 
-function togglePause() {
-  if (isPaused) {
-    isPaused = false;
-    pauseButton.textContent = "Pause Game";
-    startStopButton.disabled=true;
-    startStopButton.style.backgroundColor = "#b0b0b0";
-
-
-
-    gameInterval = setInterval(() => {
-      if (timeLeft > 0 && lives > 0) {
-        timeLeft--;
-        updateUI();
-      } else {
-        endGame();
-      }
-    }, 1000);
-
-    spawnStars();
-  } else {
-    isPaused = true;
-    clearInterval(gameInterval);
-    pauseButton.textContent = "Continue Game";
-    startStopButton.style.backgroundColor = "red";
-    startStopButton.disabled=false;
-
-  }
-}
-
+// Toggle between starting and stopping the game
 function toggleStartStop() {
   if (startStopButton.textContent === "Start") {
     startGame();
@@ -173,40 +204,61 @@ function toggleStartStop() {
   }
 }
 
-function spawnStars() {
-  const yellowStarRate = level === 1 ? 2000 : level === 2 ? 1500 : 1000; // הזמן בין יצירת כוכבים צהובים
-  const redStarRate = level === 2 ? 7000 : level === 3 ? 1000 : null; // הזמן בין יצירת כוכבים אדומים (ברמות 2 ו-3 בלבד)
-  const yellowLifetime = level === 1 ? 3000 : level === 2 ? 2000 : 1500; // זמן החיים של כוכבים צהובים
-  const redLifetime = level === 2 || level === 3 ? 2000 : null; // זמן החיים של כוכבים אדומים
-
-  // יצירת כוכבים צהובים
-  const yellowStarInterval = setInterval(() => {
-    if (isPaused || timeLeft <= 0 || lives <= 0) {
-      clearInterval(yellowStarInterval);
-      return;
-    }
-    spawnStar("yellow", yellowLifetime);
-  }, yellowStarRate);
-
-  // יצירת כוכבים אדומים (רק ברמות 2 ו-3)
-  if (level === 2 || level === 3) {
-    const redStarInterval = setInterval(() => {
-      if (isPaused || timeLeft <= 0 || lives <= 0) {
-        clearInterval(redStarInterval);
-        return;
-      }
-      spawnStar("red", redLifetime);
-    }, redStarRate);
+// Toggle between pausing and resuming the game
+function togglePause() {
+  if (pauseButton.textContent === "Pause") {
+    pauseGame();
+  } else if (pauseButton.textContent === "Continue") {
+    resumeGame();
   }
 }
 
+// Pause the game by stopping intervals
+function pauseGame() {
+  isPaused = true;
+  clearAllIntervals();
+  pauseButton.textContent = "Continue";
+  startStopButton.disabled = false;
+  startStopButton.style.backgroundColor = "red";
+}
 
+// Resume the game by restarting intervals
+function resumeGame() {
+  isPaused = false;
+  gameInterval = setInterval(updateTime, 1000);
+  setGameIntervals();
+  pauseButton.textContent = "Pause";
+  startStopButton.disabled = true;
+  startStopButton.style.backgroundColor = "#b0b0b0";
+}
+
+// Set intervals for spawning yellow and red stars based on level
+function setGameIntervals() {
+  const yellowStarRate = level === 1 ? 2000 : level === 2 ? 1500 : 1000;
+  const redStarRate = level === 2 ? 7000 : level === 3 ? 1000 : null;
+  const yellowLifetime = level === 1 ? 3000 : level === 2 ? 2000 : 1500;
+  const redLifetime = level === 2 || level === 3 ? 2000 : null;
+
+  yellowStarInterval = setInterval(() => spawnStar("yellow", yellowLifetime), yellowStarRate);
+
+  if (level === 2 || level === 3) {
+    redStarInterval = setInterval(() => spawnStar("red", redLifetime), redStarRate);
+  }
+}
+
+// Clear all game intervals
+function clearAllIntervals() {
+  clearInterval(gameInterval);
+  clearInterval(yellowStarInterval);
+  clearInterval(redStarInterval);
+}
+
+// Spawn a star in a random position and set its lifetime
 function spawnStar(color, lifetime) {
   const gameArea = document.getElementById("game-area");
   const star = document.createElement("div");
   star.classList.add("star");
 
-  // מיקום אקראי של הכוכב
   const x = Math.random() * (gameArea.clientWidth - 30);
   const y = Math.random() * (gameArea.clientHeight - 30);
 
@@ -216,78 +268,46 @@ function spawnStar(color, lifetime) {
 
   gameArea.appendChild(star);
 
-  // מסיר את הכוכב לאחר זמן החיים
+  // Remove the star after its lifetime ends
   setTimeout(() => {
     if (star.parentNode) {
       star.remove();
     }
   }, lifetime);
 
-  // לחיצה על כוכב
+  // Handle star click event
   star.addEventListener("click", () => {
     handleStarClick(color);
     star.remove();
   });
 }
 
+// Handle click events on stars (yellow increases score, red decreases lives)
 function handleStarClick(color) {
   if (color === "yellow") {
     score++;
   } else if (color === "red") {
     lives--;
     if (lives === 0) {
-      endGame();
+      endGame(); // End game if no lives left
     }
   }
   updateUI();
 }
 
+// Show the selected game level and update tab styles
 function showLevel(selectedLevel) {
-  // Update the current level
   level = selectedLevel;
-
-  // Remove "active" class from all tabs
-  document.querySelectorAll(".tab").forEach(tab => {
-    tab.classList.remove("active");
-  });
-
-  // Add "active" class to the selected tab
+  document.querySelectorAll(".tab").forEach(tab => tab.classList.remove("active"));
   const selectedTab = document.getElementById(`tab-level-${selectedLevel}`);
   selectedTab.classList.add("active");
-
-  // Update the high score display for the current level
-  document.getElementById("personal-high-scores").textContent = `High Score (Level ${level}): ${localStorage.getItem(`highScore_level${level}`) || 0}`;
 }
 
-// הצגת ה-Popup
-function showPopup() {
-  const popup = document.getElementById("popup");
-  popup.classList.add("visible");
 
-  // סגירת ה-Popup בלחיצה על הכפתור "Close"
-  const closeButton = document.getElementById("close-popup");
-  closeButton.addEventListener("click", () => {
-    popup.classList.remove("visible");
-  });
-}
-
-// הצגת ה-Popup בפתיחת המשחק
-document.addEventListener("DOMContentLoaded", () => {
-  showPopup(); // הצגת ה-Popup מיד בטעינה
-
-  // הצגת ה-Popup בלחיצה על כפתור "How to Play"
-  const instructionsButton = document.getElementById("instructions-btn");
-  instructionsButton.addEventListener("click", () => {
-    showPopup();
-  });
-});
-
-
-
-// ** Exit Logic **
+// Handle the exit button click event
 function handleExit() {
   const confirmExit = confirm("Are you sure you want to exit the game?");
   if (confirmExit) {
-    window.location.href = "menu.html";
+    window.location.href = "menu.html"; // Redirect to menu
   }
 }

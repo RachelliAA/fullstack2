@@ -1,0 +1,77 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #444;
+  }
+  
+  .podium {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+  }
+  
+  .place {
+    width: 100px;
+    text-align: center;
+    margin: 0 10px;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #e0e0e0;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .first {
+    background-color: gold;
+  }
+  
+  .second {
+    background-color: silver;
+  }
+  
+  .third {
+    background-color: #cd7f32; /* Bronze */
+  }
+  .player-list {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+  
+  .player-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .player-item:last-child {
+    border-bottom: none;
+  }
+  
+  .player-name {
+    font-weight: bold;
+  }
+  
+  .player-score {
+    color: #555;
+  }
+  
