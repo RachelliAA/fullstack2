@@ -4,46 +4,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile</title>
-    <link rel="stylesheet" href="../css/profile.css"> <!-- Link to your CSS file for styling -->
+    <link rel="stylesheet" href="../css/profile.css">
 </head>
 <body>
     <div class="profile-container">
         <h2>User Profile</h2>
-        
+
         <!-- Display user details -->
         <div class="profile-info">
             <p><strong>Email:</strong> <span id="user-email"></span></p>
             <p><strong>Username:</strong> <span id="user-name"></span></p>
-            <p><strong>Password:</strong> <span id="user-password"></span> 
-                <img id="eye-icon" src="../img/eye-close-1-32.png" alt="Toggle password visibility" width="24" height="24" style="cursor: pointer;">
-            </p>
         </div>
-        
+
         <!-- Change Username -->
         <div class="update-section">
             <h3>Change Username</h3>
-            <input type="text" id="new-username" placeholder="Enter new username">
-            <button id="update-username">Update Username</button>
+            <div class="input-group">
+                <input type="text" id="new-username" placeholder="Enter new username">
+                <button id="update-username">Update Username</button>
+            </div>
         </div>
 
         <!-- Change Password -->
         <div class="update-section">
             <h3>Change Password</h3>
-            <input type="password" id="new-password" placeholder="Enter new password">
-            <button id="update-password">Update Password</button>
-        </div>
-
-        <!-- Display Game Scores -->
-        <div class="games-scores">
-            <h3>Game Scores</h3>
-            <div id="game-scores">
-                <!-- List of games and scores will appear here -->
+            <div class="input-group">
+                <input type="password" id="old-password" placeholder="Enter old password">
+                <div class="password-container">
+                    <input type="password" id="new-password" placeholder="Enter new password">
+                    <img class="eye-icon" src="../img/eye-close-1-32.png" alt="Toggle visibility" width="24" height="24">
+                </div>
+                <input type="password" id="confirm-password" placeholder="Confirm new password">
+                <button id="update-password">Update Password</button>
             </div>
         </div>
 
-        <button id="back-button">Back to Menu</button> <!-- Button to go back to the main menu -->
+
+        
+        <!-- Display Game Scores -->
+        <div class="games-scores">
+            <h3>Game Scores</h3>
+            <ul id="game-scores">
+                <!-- List of games and scores will appear here -->
+            </ul>
+        </div>
+        <button id="back-button"  onclick="window.location.href='menu.html'">Back to Menu</button>
+        
     </div>
 
-    <script src="../js/profile.js"></script> <!-- Link to the JavaScript file -->
+    <script src="../js/profile.js"></script>
 </body>
 </html>

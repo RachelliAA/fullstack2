@@ -1,4 +1,4 @@
-body {
+/* body {
     font-family: Arial, sans-serif;
     background-color: #f0f4f8;
     display: flex;
@@ -18,6 +18,36 @@ body {
   
   .form-container {
     text-align: center;
+  } */
+  
+
+  body {
+    margin: 0;
+    padding: 0;
+    background-image: url('../img/logo.png'); /* Replace with your actual image path */
+    background-size: cover; /* Scales the image to cover the entire page */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+    background-position: center; /* Centers the image */
+    font-family: Arial, sans-serif; /* Optional: Sets a default font for the page */
+    height: 100vh; /* Ensures the body takes up the full viewport height */
+    overflow: hidden; /* Prevents unwanted scrolling */
+  }
+  
+  
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%; /* Ensures the container spans the full height */
+  }
+  
+  .form-container {
+    background: rgba(255, 255, 255, 0.8); /* Adds a white background with transparency */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: Adds a subtle shadow for better visibility */
+    max-width: 400px;
+    width: 100%;
   }
   
   .hidden {

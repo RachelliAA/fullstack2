@@ -345,6 +345,7 @@ function handlePlayerInput(color) {
   }
 }
 
+//updates the currents user top score if needed and then checks if it is also a global top score.
 function updateHighScore() {
   const currentUser = JSON.parse(localStorage.getItem('current user'));
   const users = JSON.parse(localStorage.getItem("users")) || [];
@@ -373,6 +374,36 @@ function updateHighScore() {
 
     localStorage.setItem("users", JSON.stringify(users));
   }
+
+  updateTopScores(level); // Update global top 3 scores
+}
+
+//top score in general- global
+function updateTopScores(level) {
+  const currentUser = JSON.parse(localStorage.getItem('current user'));
+  const colorPuzzleScores = JSON.parse(localStorage.getItem("colorPuzzle")) || [];
+
+  // Get the current timestamp
+  const timestamp = new Date().toISOString();
+
+  // Create the current user's score entry
+  const newScoreEntry = {
+    name: currentUser.name,
+    score: level,
+    timestamp: timestamp
+  };
+
+  // Add the new score to the list
+  colorPuzzleScores.push(newScoreEntry);
+
+  // Sort scores in descending order
+  colorPuzzleScores.sort((a, b) => b.score - a.score);
+
+  // Keep only the top 3 scores
+  const topThreeScores = colorPuzzleScores.slice(0, 3);
+
+  // Save the updated top 3 scores in local storage
+  localStorage.setItem("colorPuzzle", JSON.stringify(topThreeScores));
 }
 
 function resetGame() {

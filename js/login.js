@@ -1,4 +1,3 @@
-
 const users = JSON.parse(localStorage.getItem('users')) || []; // Retrieve users from localStorage as an array
 let failedAttempts = {};
 const MAX_ATTEMPTS = 3;
@@ -90,6 +89,7 @@ document.getElementById('login').addEventListener('submit', (e) => {
       email: email,
       password: password,
       name: users[userIndex].name,
+      games: users[userIndex].games,
       timestamps: users[userIndex].timestamps
     };
 

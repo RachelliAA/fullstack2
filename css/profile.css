@@ -7,87 +7,71 @@ body {
 
 .profile-container {
   max-width: 600px;
-  margin: 20px auto;
+  margin: 50px auto;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   padding: 20px;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-h2 {
+h2, h3 {
+  color: #333;
   text-align: center;
-  color: #333;
 }
 
-/* .profile-info p {
-  font-size: 16px;
-  color: #555;
-} */
-
-.profile-info p {
-  position: relative; /* Make the password container position relative */
+.profile-info, .update-section, .games-scores {
+  margin-bottom: 20px;
 }
 
-#eye-icon {
-  position: absolute;
-  right: 0; /* Position it on the right edge of the parent container */
-  top: 50%; /* Vertically center it */
-  transform: translateY(-50%); /* Adjust for perfect centering */
-  cursor: pointer; /* Make the icon look clickable */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.update-section {
-  margin-top: 20px;
+.password-container {
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
-.update-section h3 {
-  font-size: 18px;
-  color: #333;
-}
-
-.update-section input {
-  width: 100%;
+input {
   padding: 10px;
-  margin-top: 5px;
   border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-
-.update-section button {
-  padding: 10px 20px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-top: 10px;
-}
-
-.update-section button:hover {
-  background-color: #45a049;
-}
-
-.games-scores {
-  margin-top: 30px;
-}
-
-.games-scores p {
-  font-size: 16px;
-  color: #555;
-}
-
-button#back-button {
-  padding: 10px 20px;
-  background-color: #007BFF;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  margin-top: 20px;
-  cursor: pointer;
+  border-radius: 5px;
   width: 100%;
 }
 
-button#back-button:hover {
-  background-color: #0056b3;
+button {
+  padding: 10px 15px;
+  background: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+}
+
+button:hover {
+  background: #45a049;
+}
+
+.eye-icon {
+  cursor: pointer;
+  margin-left: -30px;
+}
+
+#game-scores {
+  list-style: none;
+  padding: 0;
+}
+
+#game-scores li {
+  background: #f9f9f9;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
