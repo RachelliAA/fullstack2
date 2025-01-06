@@ -96,7 +96,7 @@ document.getElementById('login').addEventListener('submit', (e) => {
     localStorage.setItem('current user', JSON.stringify(currentUser));
 
     // Redirect to the menu page
-    window.location.href = '../pages/menu.html';
+    window.location.href = './pages/menu.html';
     failedAttempts[email] = null;
   } else { // Wrong email or password
     alert('Invalid email or password');

@@ -4,6 +4,7 @@ let lives = 3;
 let timeLeft = 30;
 let level = 1;
 let gameInterval;
+let yellowStarInterval, redStarInterval;
 let isPaused = false;
 
 // Button references
@@ -22,8 +23,6 @@ function initializeGame() {
   pauseButton.disabled = true;
 
   updateTabs();
-  displayHighScores(getCurrentUsername());
-
   document.getElementById("exit-btn").addEventListener("click", handleExit);
 }
 
@@ -40,17 +39,6 @@ function updateTabs() {
   document.getElementById("tab-level-3").disabled = highScoreLevel2 < 10;
 }
 
-function displayHighScores(username) {
-  const userData = getUserData(username);
-  const personalScores = Object.keys(userData.highScores)
-    .map(level => `${userData.highScores[level]}`)
-    .join(", ");
-  document.getElementById("personal-high-scores").textContent = `Your High Scores: ${personalScores}`;
-
- // const globalScores = getGlobalHighScores();
- // document.getElementById("global-high-scores").textContent = `Global High Scores: ${globalScores.join(", ")}`;
-}
-
 function resetGameState() {
   score = 0;
   lives = 3;
@@ -64,65 +52,95 @@ function updateUI() {
   document.getElementById("time").textContent = timeLeft;
 }
 
-// ** User and Score Management **
 function getUserData(username) {
   return JSON.parse(localStorage.getItem(username)) || { highScores: {} };
 }
 
-function saveUserData(username, level, score) {
-  const userData = getUserData(username);
-  if (!userData.highScores[level] || score > userData.highScores[level]) {
-    userData.highScores[level] = score;
+function updateHighScore(level, score) {
+  const currentUser = JSON.parse(localStorage.getItem('current user')) || {};
+  const users = JSON.parse(localStorage.getItem("users")) || [];
+
+  if (!currentUser.games) {
+    currentUser.games = {};
   }
-  localStorage.setItem(username, JSON.stringify(userData));
-  updateGlobalHighScores(score);
+  if (!Array.isArray(currentUser.games.catchTheStars)) {
+    currentUser.games.catchTheStars = [0, 0, 0];
+  }
+
+  if (score > currentUser.games.catchTheStars[level - 1]) {
+    currentUser.games.catchTheStars[level - 1] = score;
+    localStorage.setItem("current user", JSON.stringify(currentUser));
+
+    const userIndex = users.findIndex(user => user.email === currentUser.email);
+    if (userIndex > -1) {
+      users[userIndex] = currentUser;
+    } else {
+      users.push(currentUser);
+    }
+    localStorage.setItem("users", JSON.stringify(users));
+  }
 }
 
 function getHighScore(level) {
-  return parseInt(localStorage.getItem(`highScore_level${level}`)) || 0;
+  const currentUser = JSON.parse(localStorage.getItem('current user')) || {};
+  const personalScores = currentUser.games?.catchTheStars || [0, 0, 0];
+  return personalScores[level - 1];
 }
 
-function updateGlobalHighScores(score) {
-  const globalScores = getGlobalHighScores();
-  globalScores.push(score);
-  globalScores.sort((a, b) => b - a);
-  if (globalScores.length > 3) {
-    globalScores.pop();
-  }
-  localStorage.setItem("globalHighScores", JSON.stringify(globalScores));
-}
+function updateTopScores() {
+  const users = JSON.parse(localStorage.getItem("users")) || [];
+  const topScores = JSON.parse(localStorage.getItem("catchTheStarsTop")) || [];
 
-function getGlobalHighScores() {
-  return JSON.parse(localStorage.getItem("globalHighScores")) || [];
+  users.forEach(user => {
+    if (user.games && Array.isArray(user.games.catchTheStars)) {
+      const highestScore = Math.max(...user.games.catchTheStars);
+      if (highestScore > 0) {
+        topScores.push({
+          name: user.name,
+          score: highestScore
+        });
+      }
+    }
+  });
+
+  topScores.sort((a, b) => b.score - a.score);
+  const topThreeScores = topScores.slice(0, 3);
+
+  localStorage.setItem("catchTheStarsTop", JSON.stringify(topThreeScores));
 }
 
 // ** Game Logic **
 function startGame() {
+  clearAllIntervals();
   resetGameState();
 
   startStopButton.textContent = "Stop";
   startStopButton.disabled = true;
+  startStopButton.style.backgroundColor = "#b0b0b0";
   pauseButton.disabled = false;
+  pauseButton.textContent = "Pause";
+  pauseButton.style.backgroundColor = "#be9c13";
 
-  gameInterval = setInterval(() => {
-    if (timeLeft > 0 && lives > 0) {
-      timeLeft--;
-      updateUI();
-    } else {
-      endGame();
-    }
-  }, 1000);
+  gameInterval = setInterval(updateTime, 1000);
+  setGameIntervals();
+}
 
-  spawnStars();
+function updateTime() {
+  if (timeLeft > 0 && lives > 0) {
+    timeLeft--;
+    updateUI();
+  } else {
+    endGame();
+  }
 }
 
 function endGame() {
-  clearInterval(gameInterval);
+  clearAllIntervals();
   document.getElementById("game-area").innerHTML = "";
   alert(`Game over! Your score is ${score}.`);
 
-  saveUserData(getCurrentUsername(), level, score);
-  displayHighScores(getCurrentUsername());
+  updateHighScore(level, score);
+  updateTopScores();
 
   resetGameState();
   resetButtons();
@@ -133,36 +151,7 @@ function resetButtons() {
   startStopButton.disabled = false;
   startStopButton.style.backgroundColor = "";
   pauseButton.disabled = true;
-  pauseButton.textContent = "Pause Game";
-}
-
-function togglePause() {
-  if (isPaused) {
-    isPaused = false;
-    pauseButton.textContent = "Pause Game";
-    startStopButton.disabled=true;
-    startStopButton.style.backgroundColor = "#b0b0b0";
-
-
-
-    gameInterval = setInterval(() => {
-      if (timeLeft > 0 && lives > 0) {
-        timeLeft--;
-        updateUI();
-      } else {
-        endGame();
-      }
-    }, 1000);
-
-    spawnStars();
-  } else {
-    isPaused = true;
-    clearInterval(gameInterval);
-    pauseButton.textContent = "Continue Game";
-    startStopButton.style.backgroundColor = "red";
-    startStopButton.disabled=false;
-
-  }
+  pauseButton.textContent = "Pause";
 }
 
 function toggleStartStop() {
@@ -173,40 +162,55 @@ function toggleStartStop() {
   }
 }
 
-function spawnStars() {
-  const yellowStarRate = level === 1 ? 2000 : level === 2 ? 1500 : 1000; // הזמן בין יצירת כוכבים צהובים
-  const redStarRate = level === 2 ? 7000 : level === 3 ? 1000 : null; // הזמן בין יצירת כוכבים אדומים (ברמות 2 ו-3 בלבד)
-  const yellowLifetime = level === 1 ? 3000 : level === 2 ? 2000 : 1500; // זמן החיים של כוכבים צהובים
-  const redLifetime = level === 2 || level === 3 ? 2000 : null; // זמן החיים של כוכבים אדומים
-
-  // יצירת כוכבים צהובים
-  const yellowStarInterval = setInterval(() => {
-    if (isPaused || timeLeft <= 0 || lives <= 0) {
-      clearInterval(yellowStarInterval);
-      return;
-    }
-    spawnStar("yellow", yellowLifetime);
-  }, yellowStarRate);
-
-  // יצירת כוכבים אדומים (רק ברמות 2 ו-3)
-  if (level === 2 || level === 3) {
-    const redStarInterval = setInterval(() => {
-      if (isPaused || timeLeft <= 0 || lives <= 0) {
-        clearInterval(redStarInterval);
-        return;
-      }
-      spawnStar("red", redLifetime);
-    }, redStarRate);
+function togglePause() {
+  if (pauseButton.textContent === "Pause") {
+    pauseGame();
+  } else if (pauseButton.textContent === "Continue") {
+    resumeGame();
   }
 }
 
+function pauseGame() {
+  isPaused = true;
+  clearAllIntervals();
+  pauseButton.textContent = "Continue";
+  startStopButton.disabled = false;
+  startStopButton.style.backgroundColor = "red";
+}
+
+function resumeGame() {
+  isPaused = false;
+  gameInterval = setInterval(updateTime, 1000);
+  setGameIntervals();
+  pauseButton.textContent = "Pause";
+  startStopButton.disabled = true;
+  startStopButton.style.backgroundColor = "#b0b0b0";
+}
+
+function setGameIntervals() {
+  const yellowStarRate = level === 1 ? 2000 : level === 2 ? 1500 : 1000;
+  const redStarRate = level === 2 ? 7000 : level === 3 ? 1000 : null;
+  const yellowLifetime = level === 1 ? 3000 : level === 2 ? 2000 : 1500;
+  const redLifetime = level === 2 || level === 3 ? 2000 : null;
+
+  yellowStarInterval = setInterval(() => spawnStar("yellow", yellowLifetime), yellowStarRate);
+
+  if (level === 2 || level === 3) {
+    redStarInterval = setInterval(() => spawnStar("red", redLifetime), redStarRate);
+  }
+}
+
+function clearAllIntervals() {
+  clearInterval(gameInterval);
+  clearInterval(yellowStarInterval);
+  clearInterval(redStarInterval);
+}
 
 function spawnStar(color, lifetime) {
   const gameArea = document.getElementById("game-area");
   const star = document.createElement("div");
   star.classList.add("star");
 
-  // מיקום אקראי של הכוכב
   const x = Math.random() * (gameArea.clientWidth - 30);
   const y = Math.random() * (gameArea.clientHeight - 30);
 
@@ -216,14 +220,12 @@ function spawnStar(color, lifetime) {
 
   gameArea.appendChild(star);
 
-  // מסיר את הכוכב לאחר זמן החיים
   setTimeout(() => {
     if (star.parentNode) {
       star.remove();
     }
   }, lifetime);
 
-  // לחיצה על כוכב
   star.addEventListener("click", () => {
     handleStarClick(color);
     star.remove();
@@ -243,48 +245,35 @@ function handleStarClick(color) {
 }
 
 function showLevel(selectedLevel) {
-  // Update the current level
   level = selectedLevel;
 
-  // Remove "active" class from all tabs
   document.querySelectorAll(".tab").forEach(tab => {
     tab.classList.remove("active");
   });
 
-  // Add "active" class to the selected tab
   const selectedTab = document.getElementById(`tab-level-${selectedLevel}`);
   selectedTab.classList.add("active");
-
-  // Update the high score display for the current level
-  document.getElementById("personal-high-scores").textContent = `High Score (Level ${level}): ${localStorage.getItem(`highScore_level${level}`) || 0}`;
 }
 
-// הצגת ה-Popup
 function showPopup() {
   const popup = document.getElementById("popup");
   popup.classList.add("visible");
 
-  // סגירת ה-Popup בלחיצה על הכפתור "Close"
   const closeButton = document.getElementById("close-popup");
   closeButton.addEventListener("click", () => {
     popup.classList.remove("visible");
   });
 }
 
-// הצגת ה-Popup בפתיחת המשחק
 document.addEventListener("DOMContentLoaded", () => {
-  showPopup(); // הצגת ה-Popup מיד בטעינה
+  showPopup();
 
-  // הצגת ה-Popup בלחיצה על כפתור "How to Play"
   const instructionsButton = document.getElementById("instructions-btn");
   instructionsButton.addEventListener("click", () => {
     showPopup();
   });
 });
 
-
-
-// ** Exit Logic **
 function handleExit() {
   const confirmExit = confirm("Are you sure you want to exit the game?");
   if (confirmExit) {
