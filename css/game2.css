@@ -1,4 +1,4 @@
-   body {
+   /* body {
     font-family: Arial, sans-serif;
     background: #f0f8ff;
     display: flex;
@@ -6,6 +6,17 @@
     align-items: center;
     height: 100vh;
     margin: 0;
+  } */
+  
+  body {
+    font-family: Arial, sans-serif;
+    background: #f0f8ff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 100px); /* Subtract header/footer height */
+    margin: 50px 0; /* Add space for header and footer */
+    box-sizing: border-box;
   }
   
   .game-container {
@@ -15,7 +26,10 @@
     border-radius: 10px;
     background: #fff;
     width: 300px;
+    margin-top: 60px; /* Push down to avoid overlap with header */
+    margin-bottom: 60px; /* Push up to avoid overlap with footer */
   }
+  
   
   h1 {
     margin-bottom: 10px;
