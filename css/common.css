@@ -1,7 +1,6 @@
 /* common.css Header Styles */
   header{
-    background-color: #f4f4f4;
-    padding: 10px 20px;
+    background-color: #d65c8d;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     position: fixed;
     top: 0;
@@ -18,7 +17,7 @@
   }
   
   header .logo {
-    height: 50px;
+    height: 70px;
     cursor: pointer;
     margin-left: 10px;
   }
