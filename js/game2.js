@@ -400,10 +400,13 @@ function updateTopScores(level) {
   colorPuzzleScores.sort((a, b) => b.score - a.score);
 
   // Keep only the top 3 scores
-  //const topThreeScores = colorPuzzleScores.slice(0, 3);
+  const topThreeScores = colorPuzzleScores.slice(0, 3);
 
   // Save the updated top 3 scores in local storage
-  localStorage.setItem("colorPuzzle", JSON.stringify(colorPuzzleScores));
+  localStorage.setItem("colorPuzzleTop", JSON.stringify(topThreeScores));
+
+  // Save all scores in local storage
+  localStorage.setItem("colorPuzzleAll", JSON.stringify(colorPuzzleScores));
 }
 
 function resetGame() {
