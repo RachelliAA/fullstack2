@@ -1,66 +1,138 @@
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #f4f4f4;
+    background-color: #f0f8ff; /* Light blue background */
     color: #333;
     margin: 0;
     padding: 0;
   }
   
   .container {
-    max-width: 800px;
+    max-width: 900px;
     margin: 50px auto;
     padding: 20px;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #3b495b;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
   }
   
   h1 {
     text-align: center;
     margin-bottom: 30px;
-    color: #444;
+    color: white;
+    animation: slideIn 1s ease;
   }
   
+  /* Podium section */
   .podium {
     display: flex;
     justify-content: center;
+    align-items: flex-end;
     margin-bottom: 30px;
+    gap: 30px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 1s forwards;
+    animation-delay: 0.3s;
   }
   
+  /* Place styles */
   .place {
-    width: 100px;
+    width: 110px;
     text-align: center;
-    margin: 0 10px;
     padding: 10px;
-    border-radius: 8px;
-    background-color: #e0e0e0;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    position: relative;
+    font-weight: bold;
+    align-items: center;
+  }
+.name{
+    margin-top: 30px;
+}
+  
+  .place:hover {
+    transform: scale(1.1);
   }
   
+  /* First place */
   .first {
-    background-color: gold;
+    background: linear-gradient(135deg, #ffdd00, #ffa200);
+    height: 160px;
+    box-shadow: 0 0 20px rgba(255, 223, 0, 0.5);
   }
   
+  .first::before {
+    content: "🥇"; /* Gold medal */
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 50px;
+  }
+  
+  /* Second place */
   .second {
-    background-color: silver;
+    background: linear-gradient(135deg, #c0c0c0, #8c8c8c);
+    height: 130px;
+    box-shadow: 0 0 15px rgba(192, 192, 192, 0.5);
   }
   
-  .third {
-    background-color: #cd7f32; /* Bronze */
+  .second::before {
+    content: "🥈"; /* Silver medal */
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 40px;
   }
+  
+  /* Third place */
+  .third {
+    background: linear-gradient(135deg, #cd7f32, #8c5b2f);
+    height: 110px;
+    box-shadow: 0 0 15px rgba(205, 127, 50, 0.5);
+  }
+  
+  .third::before {
+    content: "🥉"; /* Bronze medal */
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 40px;
+  }
+  
+  /* Player list */
   .player-list {
     margin-top: 20px;
-    padding: 10px;
+    border-radius: 10px;
+    overflow: hidden;
     border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f9f9f9;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
   }
   
   .player-item {
     display: flex;
     justify-content: space-between;
-    padding: 5px 0;
+    padding: 12px 20px;
     border-bottom: 1px solid #ddd;
+    font-size: 18px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+  }
+  
+  .player-item:nth-child(odd) {
+    background-color: #d1f7ff;
+  }
+  
+  .player-item:nth-child(even) {
+    background-color: #a6e3ff;
+  }
+  
+  .player-item:hover {
+    background-color: #75d0ff;
   }
   
   .player-item:last-child {
@@ -72,6 +144,26 @@ body {
   }
   
   .player-score {
-    color: #555;
+    color: #222;
+  }
+  
+  /* Animation for heading */
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateX(-100px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  /* Fade in animation for podium */
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
   
