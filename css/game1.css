@@ -84,31 +84,35 @@ h1 {
   gap: 10px;
   margin: 10px 0;
 }
-
+/* Default tab style */
 .tab {
-  background-color: #ccc;
+  background-color: #ccc; /* Light gray for disabled tabs */
   color: white;
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
-  cursor: pointer;
+  cursor: not-allowed;
   transition: background-color 0.3s;
 }
 
-.tab:not([disabled]) {
-  background-color: #2352a1;
+/* Enabled tab style */
+.tab-enabled {
+  background-color: #2352a1; /* Dark blue for enabled tabs */
+  cursor: pointer;
 }
 
-.tab:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
+/* Hover effect for enabled tabs */
+.tab-enabled:hover {
+  background-color: #1e3e7a; /* Darker blue on hover */
 }
 
+/* Active tab style */
 .tab.active {
-  background-color: #412379;
+  background-color: #412379; /* Purple for active tab */
   color: #ffffff;
   font-weight: bold;
 }
+
 
 /* Game area styles */
 #game-area {

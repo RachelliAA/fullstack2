@@ -35,9 +35,35 @@ function getCurrentUsername() {
 function updateTabs() {
   const highScoreLevel1 = getHighScore(1);
   const highScoreLevel2 = getHighScore(2);
-  document.getElementById("tab-level-2").disabled = highScoreLevel1 < 10;
-  document.getElementById("tab-level-3").disabled = highScoreLevel2 < 10;
+  let tab;
+
+  if(highScoreLevel1 >= 10){
+    unlockLevel(2);
+  }
+  
+  if(highScoreLevel2 >= 10){
+    unlockLevel(3);
+
+  }
+ // document.getElementById("tab-level-2").disabled = highScoreLevel1 < 10 ? true : false;
+  //document.getElementById("tab-level-3").disabled = highScoreLevel2 < 10 ? true : false;
+
+ 
 }
+function unlockLevel(levelNumber) {
+  const tab = document.getElementById(`tab-level-${levelNumber}`);
+  
+  if (tab) {
+    console.log(`Unlocking level ${levelNumber}`); // Log for debugging
+    tab.disabled = false;
+    tab.removeAttribute("disabled");
+    tab.classList.remove("tab-disabled");
+    tab.classList.add("tab-enabled");
+  } else {
+    console.log(`Tab for level ${levelNumber} not found`);
+  }
+}
+
 
 // Reset game variables and update UI
 function resetGameState() {
@@ -49,10 +75,13 @@ function resetGameState() {
 
 // Update score, lives, and time in the UI
 function updateUI() {
-  document.getElementById("score").textContent = score;
-  document.getElementById("lives").textContent = lives;
-  document.getElementById("time").textContent = timeLeft;
-}
+    document.getElementById("score").textContent = score;
+    document.getElementById("lives").textContent = lives;
+    document.getElementById("time").textContent = timeLeft;
+  
+  }
+  
+
 
 // Get user data from local storage
 function getUserData(username) {
@@ -171,11 +200,12 @@ function endGame() {
 
   // Show game over popup with score
   showPopup(`Game over! Your score is ${score}.`, "Close");
-
   updateHighScore(level, score);
   updateTopScores();
   resetGameState();
   resetButtons();
+  updateTabs();
+
 }
 
 
