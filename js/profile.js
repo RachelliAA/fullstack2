@@ -65,37 +65,6 @@ document.getElementById('update-password').addEventListener('click', () => {
     }
 });
 
-// // Populate game scores
-// const gameScoresList = document.getElementById('game-scores');
-// console.log(currentUser)
-// if (currentUser.games) {
-//     currentUser.games.forEach(game => {
-//         const listItem = document.createElement('li');
-//         listItem.innerHTML = `<span>${game.name}</span><span>${new Date(game.timestamp).toLocaleString()}</span>`;
-//         gameScoresList.appendChild(listItem);
-//     });
-// }
-
-// // Display game scores
-// const gameScoresContainer = document.getElementById('game-scores');
-
-// // Ensure games is an array before iterating
-// if (Array.isArray(currentUser.games)) {
-//     currentUser.games.forEach((game, index) => {
-//         const gameElement = document.createElement('div');
-//         gameElement.classList.add('game-score');
-//         gameElement.innerHTML = `
-//             <p><strong>Game ${index + 1}:</strong> ${game.name || 'Unknown'}</p>
-//             <p><strong>Score:</strong> ${game.score || 'N/A'}</p>
-//             <p><strong>Timestamp:</strong> ${game.timestamp || 'No timestamp available'}</p>
-//         `;
-//         gameScoresContainer.appendChild(gameElement);
-//     });
-// } else {
-//     gameScoresContainer.innerHTML = '<p>No games available to display.</p>';
-// }
-
-
 // Back to menu
 document.getElementById('back-button').addEventListener('click', () => {
   window.location.href = '../pages/menu.html'; 

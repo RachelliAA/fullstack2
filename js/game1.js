@@ -59,23 +59,21 @@ function getUserData(username) {
   return JSON.parse(localStorage.getItem(username)) || { highScores: {} };
 }
 
-// Update high score for a specific level
+// ** Update high score for a specific level **
 function updateHighScore(level, score) {
   const currentUser = JSON.parse(localStorage.getItem('current user')) || {};
   const users = JSON.parse(localStorage.getItem("users")) || [];
 
-  if (!currentUser.games) {
-    currentUser.games = {};
-  }
-  if (!Array.isArray(currentUser.games.catchTheStars)) {
-    currentUser.games.catchTheStars = [0, 0, 0];
-  }
+  // Initialize games and high score array if missing
+  if (!currentUser.games) currentUser.games = {};
+  if (!Array.isArray(currentUser.games.catchTheStars)) currentUser.games.catchTheStars = [0, 0, 0];
 
-  // Update high score if the new score is higher
+  // Check if the new score is higher, and update if needed
   if (score > currentUser.games.catchTheStars[level - 1]) {
     currentUser.games.catchTheStars[level - 1] = score;
     localStorage.setItem("current user", JSON.stringify(currentUser));
 
+    // Update or add user to the global users array
     const userIndex = users.findIndex(user => user.email === currentUser.email);
     if (userIndex > -1) {
       users[userIndex] = currentUser;
@@ -86,41 +84,37 @@ function updateHighScore(level, score) {
   }
 }
 
-// Get high score for a specific level
+// ** Get high score for a specific level **
 function getHighScore(level) {
   const currentUser = JSON.parse(localStorage.getItem('current user')) || {};
   const personalScores = currentUser.games?.catchTheStars || [0, 0, 0];
   return personalScores[level - 1];
 }
 
+// ** Update the list of top scores across all players **
 function updateTopScores() {
-  // Retrieve all scores from local storage
   const allScores = JSON.parse(localStorage.getItem("catchTheStarsAll")) || [];
-
-  // Get current player details
   const currentUser = JSON.parse(localStorage.getItem("current user")) || {};
   const currentPlayer = { email: currentUser.email, name: currentUser.name, score: score };
 
-  // Check if the player already exists in the all scores array
+  // Find if the player already exists in the scores list
   const existingPlayerIndex = allScores.findIndex(player => player.email === currentPlayer.email);
 
   if (existingPlayerIndex !== -1) {
-    // If the player exists, update their score only if the new score is higher
+    // Update the score only if the new score is higher
     if (currentPlayer.score > allScores[existingPlayerIndex].score) {
       allScores[existingPlayerIndex].score = currentPlayer.score;
     }
   } else {
-    // If the player does not exist, add them to the array
+    // Add the player to the list if not already present
     allScores.push(currentPlayer);
   }
 
-  // Save the updated all scores array in local storage
+  // Save the updated scores in local storage
   localStorage.setItem("catchTheStarsAll", JSON.stringify(allScores));
 
-  // Sort by score in descending order and keep only the top 3
+  // Create and save the top 3 scores
   const topScores = [...allScores].sort((a, b) => b.score - a.score).slice(0, 3);
-
-  // Save the updated Top 3 scores in local storage
   localStorage.setItem("catchTheStarsTop", JSON.stringify(topScores));
 }
 

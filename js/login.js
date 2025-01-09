@@ -14,45 +14,6 @@ document.getElementById('show-login').addEventListener('click', () => {
   toggleForms('login');
 });
 
-// // Sets an event when the submit button is pressed for login
-// document.getElementById('login').addEventListener('submit', (e) => {
-//   e.preventDefault();
-//   const email = document.getElementById('login-email').value;
-//   const password = document.getElementById('login-password').value;
-
-//   // If the account is blocked, show an alert
-//   if (failedAttempts[email] && Date.now() < failedAttempts[email].unblockTime) {
-//     alert('Account temporarily blocked. Try again later.');
-//     return;
-//   }
-
-//   // If the password is correct
-//   const userIndex = users.findIndex(user => user.email === email);
-
-//   if (userIndex > -1 && users[userIndex].password === password) {
-//     // Save a 12-hour cookie with username and password
-//     setCookie('user_email', email, 12);
-//     setCookie('user_password', password, 12);
-
-//     document.cookie = `user=${email}; max-age=600`; // 10 minutes
-    
-//     // Create a currentUser object to store in localStorage
-//     const currentUser = {
-//       email: email,
-//       password: password,
-//       name: users[userIndex].name
-//     };
-
-//     // Save the current user object to localStorage
-//     localStorage.setItem('current user', JSON.stringify(currentUser));
-
-//     window.location.href = '../pages/menu.html'; // Redirects to the menu page
-//     failedAttempts[email] = null;
-//   } else { // Wrong email or password
-//     alert('Invalid email or password');
-//     handleFailedAttempt(email);
-//   }
-// });
 
 document.getElementById('login').addEventListener('submit', (e) => {
   e.preventDefault();

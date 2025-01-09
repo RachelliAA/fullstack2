@@ -11,7 +11,7 @@ body {
     max-width: 900px;
     margin: 50px auto;
     padding: 20px;
-    background-color: #3b495b;
+    background-color: #333;
     border-radius: 15px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
   }
